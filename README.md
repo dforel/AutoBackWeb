@@ -8,7 +8,8 @@
 `该备份方法需要配合oneIndex使用，oneIndex:https://github.com/donwa/oneindex`
 
 1、安装好oneIndex、python
-1、将BackController.php放到oneIndex的controller目录。
+
+2、将BackController.php放到oneIndex的controller目录。
 ```
 	#配置加密的盐值保持和back.py的一致
 	private $salt = "test123456";
@@ -16,8 +17,12 @@
 	private $tmp_path = "/tmp/upload/";
 ```
 
-2、在oneIndex的index.php页面的第58行（列目录前面）增加一行route::any('/back','BackController@index');
-3、将back.py放到要备份的同级目录中，并且配置好以下参数
+3、在oneIndex的index.php页面的第58行（列目录前面）增加一行
+```
+route::any('/back','BackController@index');
+```
+
+4、将back.py放到要备份的同级目录中，并且配置好以下参数
 ```
 # 要备份的目录
 s_dir=r'/www/wwwroot/driver.kekeacg.com'
