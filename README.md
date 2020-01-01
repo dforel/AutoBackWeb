@@ -1,4 +1,4 @@
-# 自动备份网站到oneIndex的脚本
+﻿# 自动备份网站到oneIndex的脚本
 
 ## 我的博客
 https://kekeacg.com/archives/27.html
@@ -9,6 +9,8 @@ https://kekeacg.com/archives/27.html
 ## 使用方法
 
 `该备份方法需要配合oneIndex使用，oneIndex:https://github.com/donwa/oneindex`
+
+`2020年1月1日增加了压缩分卷，记得修改controller运行分卷的扩展，我是直接删掉了扩展的校验！`
 
 1、安装好oneIndex、python
 
