@@ -29,6 +29,9 @@ DB_USER_PASSWD = '123456'
 DB_NAME = 'kk'
 BACKUP_PATH = '/www/wwwroot/kekeacg.com/db/'
 
+# 2020年1月1日 增加zip压缩包加密
+ZIP_PASSWORD = 'xhvps.info'
+
 DATETIME = time.strftime('%Y%m%d-%H%M%S')
 TODAYBACKUPPATH = BACKUP_PATH
 
@@ -54,6 +57,8 @@ def make_zip(source_dir, output_filename):
             pathfile = os.path.join(parent, filename)
             arcname = pathfile[pre_len:].strip(os.path.sep)   #相对路径
             zipf.write(pathfile, arcname)
+    
+    zipf.setpassword(ZIP_PASSWORD)
     zipf.close()
     
 def upload_file(zip_out,file_name):
@@ -69,16 +74,47 @@ def remove_file(file_name):
     else:
         print "file not found！"
 
+def zipDir(dirpath, outFullName, password=None):
+    """
+    压缩指定文件夹
+    :param dirpath: 目标文件夹路径
+    :param outFullName: 保存路径+xxxx.zip
+    :return: 
+    """
+    import os
+    import subprocess
+    if password:
+    	#有密码时设置密码并压缩
+        cmd = "zip -s 40m -P %s -r %s %s" % (password, outFullName, dirpath)
+    else:
+    	#无密码直接压缩
+        cmd = "zip -s 40m -r %s %s " % (outFullName, dirpath) 
+    ex = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+    out, err  = ex.communicate()
+    status = ex.wait()
+    print("cmd in:", cmd)
+    #print("cmd out: ", out.decode())
+    #return out.decode() 
+    #print status
+    # 执行系统命令
+    return outFullName
+
 if __name__ == '__main__':
     
     if not os.path.exists(zip_out):
         os.makedirs(zip_out)
+    zip_out = zip_out+strTime+'/'
+    if not os.path.exists(zip_out):
+        os.makedirs(zip_out)
     file_name = strTime + back_name+'.zip'
     temp_file = zip_out+file_name
-    #run_backup_sql()
-    make_zip(s_dir,temp_file)
-    upload_file(zip_out,file_name)
-    # 注释掉remove这句的话，可以备份一个在本地服务器。
-    #delete_sql()
-    remove_file(temp_file)
+    run_backup_sql()
+    #make_zip(s_dir,temp_file)
+    zipDir(s_dir,temp_file,ZIP_PASSWORD)
+    
+    for parent, dirnames, filenames in os.walk(zip_out):
+        for filename in filenames:
+    		upload_file(zip_out,filename)
+    #remove_file(temp_file)
+    
     

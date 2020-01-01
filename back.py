@@ -21,6 +21,9 @@ oneIndex_url='https://driver.kekeacg.com/?/back/'
 # salt 加密的盐值，防止任何人都能上传，保持和BackController.php的一致
 salt = 'test123456'
 
+# 2020年1月1日 增加zip压缩包加密
+ZIP_PASSWORD = 'xhvps.info'
+
 
 #打包目录为zip文件（未压缩）
 def make_zip(source_dir, output_filename):
@@ -31,6 +34,8 @@ def make_zip(source_dir, output_filename):
             pathfile = os.path.join(parent, filename)
             arcname = pathfile[pre_len:].strip(os.path.sep)   #相对路径
             zipf.write(pathfile, arcname)
+    if ZIP_PASSWORD:
+        zipf.setpassword(ZIP_PASSWORD)
     zipf.close()
     
 def upload_file(zip_out,file_name):

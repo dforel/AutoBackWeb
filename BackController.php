@@ -34,10 +34,10 @@ class BackController{
 	function is_zip($file){
 		$config = array("exts"=>[1=>"zip"]);
 		$ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-		if(!in_array($ext,$config['exts'])){
-			echo 'not in exts';
-			return false;
-		}
+		//if(!in_array($ext,$config['exts'])){
+		//	echo 'not in exts';
+		//	return false;
+		//}
 		// 限制文件大小为500M
 		if($file['size'] > 524288000 || $file['size'] == 0){
 			echo 'so big:'.$file['size'] ;
